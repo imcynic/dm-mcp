@@ -34,7 +34,7 @@ An [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that 
 ### Build from Source
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/dm-mcp.git
+git clone https://github.com/imcynic/dm-mcp.git
 cd dm-mcp
 cargo build --release
 ```
