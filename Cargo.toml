@@ -1,0 +1,37 @@
+[package]
+name = "dm-mcp"
+version = "0.1.0"
+edition = "2021"
+description = "MCP server for DreamMaker language support"
+license = "MIT"
+
+[dependencies]
+# SpacemanDMM crates from GitHub
+dreammaker = { git = "https://github.com/SpaceManiac/SpacemanDMM", branch = "master" }
+dreamchecker = { git = "https://github.com/SpaceManiac/SpacemanDMM", branch = "master" }
+dmm-tools = { git = "https://github.com/SpaceManiac/SpacemanDMM", branch = "master" }
+
+# MCP/JSON-RPC handling
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+
+# Utilities
+anyhow = "1.0"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Image handling for map screenshots
+image = "0.24"
+png = "0.17"
+
+# Process handling for compiler
+which = "6.0"
+
+# Random number generation for crypto
+rand = "0.8"
+
+[profile.release]
+opt-level = 3
+lto = true
