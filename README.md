@@ -27,11 +27,45 @@ An [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that 
 
 ## Installation
 
-### Prerequisites
-- [Rust](https://rustup.rs/) 1.70+
-- [BYOND](http://www.byond.com/download/) (for compilation and runtime features)
+### Docker (easiest — includes BYOND)
+
+The Docker image ships dm-mcp plus the BYOND Linux toolchain, so nothing else needs to be installed:
+
+```json
+{
+  "mcpServers": {
+    "dm-mcp": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-v", "/path/to/your/byond/project:/workspace",
+        "ghcr.io/imcynic/dm-mcp:latest"
+      ]
+    }
+  }
+}
+```
+
+Paths passed to tools (`dme_path`, `dmb_path`, etc.) are resolved **inside the container**, so use `/workspace/...` paths matching your volume mount. To expose a running game to clients outside the container, add `-p 1337:1337` (change the port as needed).
+
+**Windows (Docker Desktop) caveat:** DreamMaker can't read files on Docker Desktop bind mounts, so `dm_compile`/`dm_run`/`dm_topic` need a native Linux host or a copied-in workspace. The parse/analysis/map tools (SpacemanDMM-based) work fine on bind mounts. On Windows prefer the native binary for compile/run tools.
+
+Building the image yourself:
+
+```bash
+docker build -t dm-mcp .
+docker run -i --rm -v /path/to/project:/workspace dm-mcp
+```
+
+The BYOND version is a build arg: `--build-arg BYOND_MAJOR=515 --build-arg BYOND_MINOR=1647`.
+
+### Prebuilt binaries
+
+Tagged releases attach `dm-mcp` binaries for Windows and Linux — no Rust toolchain needed. BYOND still has to be installed locally for compile/run tools.
 
 ### Build from Source
+
+Prerequisites: [Rust](https://rustup.rs/) 1.70+, [BYOND](http://www.byond.com/download/) (for compilation and runtime features)
 
 ```bash
 git clone https://github.com/imcynic/dm-mcp.git
