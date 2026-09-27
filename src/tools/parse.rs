@@ -65,7 +65,7 @@ pub async fn get_type(state: &mut ServerState, args: Value) -> Result<ToolResult
             let vars: Vec<Value> = ty.vars.iter()
                 .map(|(name, var)| {
                     json!({
-                        "name": name,
+                        "name": name.as_str(),
                         "has_value": var.value.expression.is_some(),
                         "constant": var.value.constant.as_ref().map(|c| format!("{:?}", c)),
                         "declared_here": var.declaration.is_some()
@@ -80,7 +80,7 @@ pub async fn get_type(state: &mut ServerState, args: Value) -> Result<ToolResult
                         .map(|v| v.parameters.len())
                         .unwrap_or(0);
                     json!({
-                        "name": name,
+                        "name": name.as_str(),
                         "parameter_count": param_count,
                         "override_count": proc.value.len(),
                         "declared_here": proc.declaration.is_some()
@@ -137,7 +137,7 @@ pub async fn get_proc(state: &mut ServerState, args: Value) -> Result<ToolResult
                             let params: Vec<Value> = v.parameters.iter()
                                 .map(|p| {
                                     json!({
-                                        "name": p.name,
+                                        "name": p.name.as_str(),
                                         "has_default": p.default.is_some(),
                                     })
                                 })
@@ -306,7 +306,7 @@ pub async fn search_symbols(state: &mut ServerState, args: Value) -> Result<Tool
                         let file_path = get_file_path(context, first.location.file);
                         results.push(json!({
                             "kind": "proc",
-                            "name": name,
+                            "name": name.as_str(),
                             "type_path": ty.path,
                             "location": format!("{}:{}",
                                 file_path,
@@ -328,7 +328,7 @@ pub async fn search_symbols(state: &mut ServerState, args: Value) -> Result<Tool
                     let file_path = get_file_path(context, var.value.location.file);
                     results.push(json!({
                         "kind": "var",
-                        "name": name,
+                        "name": name.as_str(),
                         "type_path": ty.path,
                         "location": format!("{}:{}",
                             file_path,
